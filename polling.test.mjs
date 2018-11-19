@@ -8,8 +8,4 @@ const fakeAjax = () => {
 
 const letsPolling = usePolling(fakeAjax, 2000, res => res === 'done');
 
-void (async function() {
-  for await (const res of letsPolling()) {
-    console.log(res);
-  }
-})();
+letsPolling(console.log);
