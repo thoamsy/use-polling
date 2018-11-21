@@ -20,5 +20,5 @@ letsPolling(console.log);
 
 ## TODO
 
-- [ ]: 使用 Babel 7 的 `async iterator` 来提升兼容性
-- [ ]: 一个可以提前中止轮询的方案
+- [x] 使用 Babel 7 的 `async iterator` 来提升兼容性
+- [ ] 一个可以提前中止轮询的方案

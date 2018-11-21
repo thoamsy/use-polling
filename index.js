@@ -31,4 +31,4 @@ function usePolling(api, cycleMs, predicate = () => true) {
   };
 }
 
-module.exports = usePolling;
+export default usePolling;
