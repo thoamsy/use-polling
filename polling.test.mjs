@@ -8,4 +8,9 @@ const fakeAjax = () => {
 
 const letsPolling = usePolling(fakeAjax, 2000, res => res === 'done');
 
-letsPolling(console.log);
+const stopPolling = letsPolling(console.log);
+console.log(213);
+console.log(213);
+console.log(213);
+console.log(213);
+console.log(213);

@@ -10,18 +10,18 @@ export default function usePolling(api, cycleMs, predicate = () => true) {
   }
 
   const wait = () => new Promise(r => setTimeout(r, cycleMs));
+  let stop = false;
 
   const pollingHelper = async function*() {
     let res = null;
-    while (true) {
+    while (!stop) {
       res = await api();
       if (predicate(res)) {
-        break;
+        return res;
       }
       yield res;
       await wait();
     }
-    yield res;
   };
 
   return async fp => {
