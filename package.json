@@ -1,6 +1,6 @@
 {
-  "name": "easy-polling",
-  "version": "1.0.0",
+  "name": "use-polling",
+  "version": "0.1.0",
   "main": "index.js",
   "author": "YangKui <c6swift@gmail.com>",
   "license": "MIT",
