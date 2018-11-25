@@ -1,6 +1,6 @@
 {
   "name": "use-polling",
-  "version": "0.1.4",
+  "version": "0.2.0",
   "main": "lib/index.js",
   "author": "YangKui <c6swift@gmail.com>",
   "license": "MIT",
