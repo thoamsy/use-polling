@@ -1,5 +1,8 @@
 const curry = require('lodash.curry');
-function usePolling(api, { cycleMs, predicate = () => true }) {
+function usePolling(
+  api,
+  { cycleMs, predicate = () => true, customize = false },
+) {
   if (typeof api !== 'function') {
     throw TypeError('You should pass a function as the first param.');
   }
@@ -24,11 +27,13 @@ function usePolling(api, { cycleMs, predicate = () => true }) {
     }
   };
 
-  return async fp => {
-    for await (const res of pollingHelper()) {
-      fp(res);
-    }
-  };
+  return customize
+    ? pollingHelper
+    : async fp => {
+        for await (const res of pollingHelper()) {
+          fp(res);
+        }
+      };
 }
 
 module.exports = curry(usePolling);
