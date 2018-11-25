@@ -13,7 +13,11 @@ const fakeAjax = () => {
   return num > 0.8 ? 'done' : emojis[~~(num * 10)];
 };
 
-const letsPolling = usePolling(fakeAjax, 2000, res => res === 'done');
+const pollingEmojis = usePolling(fakeAjax);
+const letsPolling = pollingEmojis({
+  cycleMs: 2000,
+  predicate: res => res === 'done',
+});
 
 letsPolling(console.log);
 ```
