@@ -1,6 +1,5 @@
-import index from './lib/index';
+import usePolling from './lib/index';
 
-const usePolling = index.default;
 const emojis = Array.from('🌚🌝👀😎😂😏🙁🤠');
 const fakeAjax = () => {
   const num = Math.random();
