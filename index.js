@@ -16,10 +16,10 @@ function usePolling(api, cycleMs, predicate = () => true) {
     let res = null;
     while (!stop) {
       res = await api();
-      if (predicate(res)) {
-        return res;
-      }
       yield res;
+      if (predicate(res)) {
+        return;
+      }
       await wait();
     }
   };
