@@ -13,6 +13,7 @@ const fakeAjax = () => {
   return num > 0.8 ? 'done' : emojis[~~(num * 10)];
 };
 
+// 非自定义
 const pollingEmojis = usePolling(fakeAjax);
 const letsPolling = pollingEmojis({
   cycleMs: 2000,
@@ -20,6 +21,21 @@ const letsPolling = pollingEmojis({
 });
 
 letsPolling(console.log);
+
+const icanPolling = pollingEmojis({
+  cycleMs: 1000,
+  predicate: res => res === 'done',
+  customize: true,
+});
+// 自定义
+void (async function foo() {
+  const iter = letsPolling();
+  let { value, done } = await iter.next();
+  for (let i = 0; i < 2 && !done; i += 1) {
+    console.log(value);
+    ({ value, done } = await iter.next());
+  }
+})();
 ```
 
 ## TODO

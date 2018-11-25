@@ -8,8 +8,16 @@ const fakeAjax = () => {
 
 const pollingEmojis = usePolling(fakeAjax);
 const letsPolling = pollingEmojis({
-  cycleMs: 2000,
+  cycleMs: 1000,
   predicate: res => res === 'done',
+  customize: true,
 });
 
-const stopPolling = letsPolling(console.log);
+void (async function foo() {
+  const iter = letsPolling();
+  let { value, done } = await iter.next();
+  for (let i = 0; i < 2 && !done; i += 1) {
+    console.log(value);
+    ({ value, done } = await iter.next());
+  }
+})();
