@@ -1,33 +1,36 @@
-function usePolling(api, cycleMs, predicate = () => true) {
+function usePolling(api) {
   if (typeof api !== 'function') {
     throw TypeError('You should pass a function as the first param.');
   }
-  if (typeof cycleMs !== 'number') {
-    throw TypeError('You should pass the ms for the cycle of polling.');
-  }
-  if (typeof predicate !== 'function') {
-    throw TypeError('The predicate is used to determine when to exit polling');
-  }
 
-  const wait = () => new Promise(r => setTimeout(r, cycleMs));
-  let stop = false;
+  return ({ cycleMs, predicate = () => true }) => {
+    if (typeof cycleMs !== 'number') {
+      throw TypeError('You should pass the ms for the cycle of polling.');
+    }
+    if (typeof predicate !== 'function') {
+      throw TypeError(
+        'The predicate is used to determine when to exit polling',
+      );
+    }
 
-  const pollingHelper = async function*() {
-    let res = null;
-    while (!stop) {
-      res = await api();
-      yield res;
-      if (predicate(res)) {
-        return;
+    const wait = () => new Promise(r => setTimeout(r, cycleMs));
+
+    const pollingHelper = async function*() {
+      while (true) {
+        const res = await api();
+        yield res;
+        if (predicate(res)) {
+          return res;
+        }
+        await wait();
       }
-      await wait();
-    }
-  };
+    };
 
-  return async fp => {
-    for await (const res of pollingHelper()) {
-      fp(res);
-    }
+    return async fp => {
+      for await (const res of pollingHelper()) {
+        fp(res);
+      }
+    };
   };
 }
 
