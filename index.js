@@ -1,7 +1,6 @@
-const curry = require('lodash.curry');
 function usePolling(
   api,
-  { cycleMs, predicate = () => true, customize = false },
+  cycleMs,
 ) {
   if (typeof api !== 'function') {
     throw TypeError('You should pass a function as the first param.');
@@ -10,30 +9,15 @@ function usePolling(
   if (typeof cycleMs !== 'number') {
     throw TypeError('You should pass the ms for the cycle of polling.');
   }
-  if (typeof predicate !== 'function') {
-    throw TypeError('The predicate is used to determine when to exit polling');
-  }
 
-  const wait = () => new Promise(r => setTimeout(r, cycleMs));
+  let timer = null;
+  const wait = (ms) => new Promise(r => timer = setTimeout(r, ms));
 
-  const pollingHelper = async function*() {
-    while (true) {
-      const res = await api();
-      yield res;
-      if (predicate(res)) {
-        return res;
-      }
-      await wait();
-    }
-  };
-
-  return customize
-    ? pollingHelper
-    : async fp => {
-        for await (const res of pollingHelper()) {
-          fp(res);
-        }
-      };
+  return [async function polling(...args) {
+    await api(...args);
+    await wait(cycleMs);
+    polling(...args);
+  }, () => clearTimeout(timer)]
 }
 
-module.exports = curry(usePolling);
+module.exports = usePolling;
