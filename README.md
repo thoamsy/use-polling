@@ -1,49 +1,34 @@
 # 介绍
 
 轮询在一些公司，一些没有推动 WebSocket 的公司，还是一个常用的套路。
-但是，如果使用 `setInterval or setTimeout` 这种模式来写的话，总是要管理计时器，难免有些麻烦。
-所以现在使用 Async Iterator 的概念，来包装一个简单的轮询工具。提升效率。
+虽然轮询的实现难度不大，但是经常写难免会觉得无聊。
+本库采用一个十分简单的递归来做到，无限轮询的方式。
+使用方式类似于 React 的 `useState` Hooks 类 API
 
-## 使用方式
+## 概要
 
 ```js
 const emojis = Array.from('🌚🌝👀😎😂😏🙁🤠');
 const fakeAjax = () => {
   const num = Math.random();
-  return num > 0.8 ? 'done' : emojis[~~(num * 10)];
+  const res = num > 0.8 ? 'done' : emojis[~~(num * 10)];
+  console.log(res);
 };
 
-// 非自定义
-const pollingEmojis = usePolling(fakeAjax);
-const letsPolling = pollingEmojis({
-  cycleMs: 2000,
-  predicate: res => res === 'done',
-});
+const [getEmojis, stop] = usePolling(fakeAjax, 1000);
+setTimeout(stop, 3000);
+getEmojis();
+```
 
-letsPolling(console.log);
+## API
 
-const icanPolling = pollingEmojis({
-  cycleMs: 1000,
-  predicate: res => res === 'done',
-  customize: true,
-});
-// 自定义
-void (async function foo() {
-  const iter = letsPolling();
-  let { value, done } = await iter.next();
-  for (let i = 0; i < 2 && !done; i += 1) {
-    console.log(value);
-    ({ value, done } = await iter.next());
-  }
-})();
+```js
+usePolling(
+  api: (any) => void,
+  cycleMs: Number
+): [pollingApi: (any) => void, stopPolling: () => void]
 ```
 
 ## TODO
 
-- [x] 使用 Babel 7 的 `async iterator` 来提升兼容性
-- [ ] 一个可以提前中止轮询的方案
-
-PS: 提前中止在目前的套路下，可能根本做不到。因为本来返回的就是一个 `async function`，
-会自动转化成 Promise。这样就表示在 `for await of` 结束之前，这个返回的函数根本不可能运行。
-所以，一个可能的方案因为是暴露一个**配置项**来判断，是需要自动做 `for await` 的操作，还是将
-处理逻辑交给开发者自己。这样就能根据自己的意愿随时终止。
+- [ ] English Docs
