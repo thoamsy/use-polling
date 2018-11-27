@@ -1,7 +1,4 @@
-function usePolling(
-  api,
-  cycleMs,
-) {
+function usePolling(api, cycleMs) {
   if (typeof api !== 'function') {
     throw TypeError('You should pass a function as the first param.');
   }
@@ -11,13 +8,14 @@ function usePolling(
   }
 
   let timer = null;
-  const wait = (ms) => new Promise(r => timer = setTimeout(r, ms));
+  const wait = ms => new Promise(r => (timer = setTimeout(r, ms)));
 
-  return [async function polling(...args) {
+  async function polling(...args) {
     await api(...args);
     await wait(cycleMs);
     polling(...args);
-  }, () => clearTimeout(timer)]
+  }
+  return [polling, () => clearTimeout(timer)];
 }
 
 module.exports = usePolling;
