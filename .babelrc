@@ -10,5 +10,14 @@
         "useBuiltIns": "usage"
       }
     ]
+  ],
+  "plugins": [
+    [
+      "@babel/plugin-transform-runtime",
+      {
+        "corejs": false,
+        "helpers": true
+      }
+    ]
   ]
 }

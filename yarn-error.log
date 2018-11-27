@@ -1,35 +1,35 @@
 Arguments: 
-  /usr/local/bin/node /usr/local/Cellar/yarn/1.12.3/libexec/bin/yarn.js publish --tag=beta
+  /usr/local/Cellar/node/10.12.0/bin/node /usr/local/Cellar/yarn/1.10.1/libexec/bin/yarn.js publish --tag=beta
 
 PATH: 
-  /anaconda3/bin:/usr/local/sbin:/Library/Frameworks/Python.framework/Versions/3.6/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Library/TeX/texbin:/usr/local/go/bin:/anaconda3/bin:/usr/local/sbin:/Library/Frameworks/Python.framework/Versions/3.6/bin:/usr/local/opt/fzf/bin
+  /usr/local/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/sbin
 
 Yarn version: 
-  1.12.3
+  1.10.1
 
 Node version: 
-  10.10.0
+  10.12.0
 
 Platform: 
   darwin x64
 
 Trace: 
-  Error: canceled
-      at Interface.<anonymous> (/usr/local/Cellar/yarn/1.12.3/libexec/lib/cli.js:125278:13)
-      at Interface.emit (events.js:182:13)
-      at Interface._ttyWrite (readline.js:783:16)
-      at ReadStream.onkeypress (readline.js:168:10)
-      at ReadStream.emit (events.js:182:13)
-      at emitKeys (internal/readline.js:424:14)
-      at emitKeys.next (<anonymous>)
-      at ReadStream.onData (readline.js:1022:36)
-      at ReadStream.emit (events.js:182:13)
-      at addChunk (_stream_readable.js:283:12)
+  Error: https://registry.yarnpkg.com/-/user/org.couchdb.user:thomasy: That email has already been registered.
+      at Request.params.callback [as _callback] (/usr/local/Cellar/yarn/1.10.1/libexec/lib/cli.js:61073:18)
+      at Request.self.callback (/usr/local/Cellar/yarn/1.10.1/libexec/lib/cli.js:120166:22)
+      at Request.emit (events.js:182:13)
+      at Request.<anonymous> (/usr/local/Cellar/yarn/1.10.1/libexec/lib/cli.js:121138:10)
+      at Request.emit (events.js:182:13)
+      at IncomingMessage.<anonymous> (/usr/local/Cellar/yarn/1.10.1/libexec/lib/cli.js:121060:12)
+      at Object.onceWrapper (events.js:273:13)
+      at IncomingMessage.emit (events.js:187:15)
+      at endReadableNT (_stream_readable.js:1094:12)
+      at process._tickCallback (internal/process/next_tick.js:63:19)
 
 npm manifest: 
   {
     "name": "use-polling",
-    "version": "0.2.0",
+    "version": "0.3.0-beta1",
     "main": "lib/index.js",
     "author": "YangKui <c6swift@gmail.com>",
     "license": "MIT",
@@ -46,8 +46,7 @@ npm manifest:
       "webpack-cli": "^3.1.2"
     },
     "dependencies": {
-      "@babel/polyfill": "^7.0.0",
-      "lodash.curry": "^4.1.1"
+      "@babel/polyfill": "^7.0.0"
     }
   }
 
@@ -2307,11 +2306,6 @@ Lockfile:
     dependencies:
       p-locate "^3.0.0"
       path-exists "^3.0.0"
-  
-  lodash.curry@^4.1.1:
-    version "4.1.1"
-    resolved "https://registry.yarnpkg.com/lodash.curry/-/lodash.curry-4.1.1.tgz#248e36072ede906501d75966200a86dab8b23170"
-    integrity sha1-JI42By7ekGUB11lmIAqG2riyMXA=
   
   lodash.debounce@^4.0.8:
     version "4.0.8"
