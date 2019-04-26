@@ -7,7 +7,7 @@ const delay = ms =>
 
 /**
  *
- * @param {() => Promise<any>)} callback 轮询逻辑
+ * @param {() => Promise<any> | void)} callback 轮询逻辑
  * @param {number} interval 轮询间隔
  * @param {boolean} launch 是否开启轮询
  *
@@ -29,7 +29,7 @@ const usePolling = (callback, interval, launch) => {
     totalOfPolling.current = 0;
     function polling(callback, interval) {
       if (!needToLaunch.current) return;
-      return callback()
+      return Promise.resolve(callback())
         .then(
           // 这里不用 finally，因为 finally 的返回值是上一个 promise 的结果，导致下一个 then 拿不到 id
           () => {
@@ -39,7 +39,7 @@ const usePolling = (callback, interval, launch) => {
           () => {
             totalOfPolling.current += 1;
             return delay(interval);
-          }
+          },
         )
         .then(id => {
           timer = id;
@@ -53,6 +53,5 @@ const usePolling = (callback, interval, launch) => {
   }, [interval, launch]);
   return [totalOfPolling.current];
 };
-
 
 module.exports = usePolling;
