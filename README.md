@@ -51,9 +51,9 @@ const Demo = () => {
 
 ## 参数说明
 
-`callback: () => Promise<any>`
+`callback: () => Promise<any> | void`
 
-轮询逻辑，返回一个 promise
+轮询逻辑，可以返回一个 Promise 或者什么都不返回。
 
 `interval: number`
 
