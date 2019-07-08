@@ -26,10 +26,11 @@ const usePolling = (callback, interval, launch) => {
 
   useEffect(() => {
     let timer;
+    let isMount = true;
     totalOfPolling.current = 0;
     function polling(callback, interval) {
-      if (!needToLaunch.current) return;
-      return Promise.resolve(callback())
+      if (!(needToLaunch.current && isMount)) return;
+      return Promise.resolve(callback(totalOfPolling.current))
         .then(
           // 这里不用 finally，因为 finally 的返回值是上一个 promise 的结果，导致下一个 then 拿不到 id
           () => {
@@ -43,15 +44,17 @@ const usePolling = (callback, interval, launch) => {
         )
         .then(id => {
           timer = id;
-          return polling(callback, interval);
+          return polling(tick.current, interval);
         });
     }
     launch && polling(tick.current, interval);
+
     return () => {
+      isMount = false;
       clearTimeout(timer);
+      totalOfPolling.current = 1;
     };
   }, [interval, launch]);
-  return [totalOfPolling.current];
 };
 
 module.exports = usePolling;
