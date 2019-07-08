@@ -1,10 +1,6 @@
-# 介绍
+## 使用说明
 
-轮询在一些公司，一些没有推动 WebSocket 的公司，还是一个常用的套路。
-
-虽然轮询的实现难度不大，但是经常写难免会觉得无聊。
-
-本库采用一个十分简单的递归来做到，**无限轮询**。使用方式类似于 React 的 `useState` Hooks 类 API
+本 hooks 支持简单的轮询功能。
 
 ## 快速开始
 
@@ -25,7 +21,7 @@ const Demo = () => {
   const [data, setRes] = useState(null);
   const [error, setError] = useState(null);
   const [startPolling, setPolling] = useState(false);
-  const [count] = usePolling(
+  usePolling(
     () => {
       setError(null);
       return api().then(setRes, setError);
@@ -51,9 +47,10 @@ const Demo = () => {
 
 ## 参数说明
 
-`callback: () => Promise<any> | void`
+`callback: (totalOfPolling" number) => Promise<any>|void`
 
-轮询逻辑，可以返回一个 Promise 或者什么都不返回。
+轮询逻辑，返回一个 promise。不过如果你需要的话，也可以传非 Promise，仅仅做一个计时器的功能。同时会回传
+当前的轮询次数作为检查用。
 
 `interval: number`
 
@@ -63,14 +60,17 @@ const Demo = () => {
 
 是否开启轮询。用户应该使用 state 来主动控制它
 
-## 返回值
-
-`[totalOfPolling]: [number]` 轮询的次数，在某些情况下可以根据这个来觉得是否终止轮询。比如
-
 ```jsx
 const [launch, setLaunch] = useState(true);
-const [count] = usePolling(callback, 1000, launch);
-useEffect(() => count > 50 && setLaunch(false), [count]);
+usePolling(
+  total => {
+    if (total > 50) {
+      return setLaunch(false);
+    }
+  },
+  1000,
+  launch
+);
 ```
 
 ## 说明
